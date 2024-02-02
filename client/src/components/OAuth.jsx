@@ -30,7 +30,7 @@ export default function OAuth() {
 
       const data = await res.json();
       dispatch(signInSuccess(data));
-      navigate('/')
+      navigate('/sign-in')
     } catch (error) {
       console.log(error);
     }
