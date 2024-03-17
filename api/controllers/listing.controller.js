@@ -40,3 +40,37 @@ export const deleteListing = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateListing = async (req, res, next) => {
+  try {
+    const listing = await Listing.findById(req.params.id);
+
+    if (!listing) errorHandler(404, "Listing not found!");
+
+    if (listing.userRef !== req.user.id) {
+      errorHandler(401, "Not authorized to edit");
+    }
+
+    const updatedListing = await Listing.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    res.status(200).json(updatedListing);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getListingById = async (req, res, next) => {
+  try {
+    const listing = await Listing.findById(req.params.id);
+
+    if (!listing) return errorHandler(404, "Listing not found!");
+
+    res.status(200).json(listing);
+  } catch (error) {
+    next(error);
+  }
+};
